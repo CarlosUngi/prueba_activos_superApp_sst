@@ -36,3 +36,15 @@ class EmpleadoResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class EncuestaResponse(BaseModel):
+    id_respuesta: str
+    codigo_empleado: str
+    fecha_encuesta: date
+    sintoma_principal: Optional[str] = None
+    peligro_identificado: Optional[str] = None
+    nivel_dolor_percibido: Optional[float] = None
+    requiere_valoracion_medica: Optional[bool] = None
+
+    class Config:
+        from_attributes = True

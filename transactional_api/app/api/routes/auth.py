@@ -8,13 +8,11 @@ from app.models.domain import Usuario
 from app.core.security import verify_password, create_access_token
 from app.core.config import ACCESS_TOKEN_EXPIRE_MINUTES
 
-from fastapi.security import OAuth2PasswordRequestForm
-
 router = APIRouter()
 
 @router.post("/login", response_model=Token)
-def login_for_access_token(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    user = db.query(Usuario).filter(Usuario.email == request.username).first()
+def login_for_access_token(request: LoginRequest, db: Session = Depends(get_db)):
+    user = db.query(Usuario).filter(Usuario.email == request.email).first()
     
     if not user or not verify_password(request.password, user.hashed_password):
         raise HTTPException(

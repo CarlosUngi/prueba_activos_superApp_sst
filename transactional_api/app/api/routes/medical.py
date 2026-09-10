@@ -3,8 +3,8 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from app.database.session import get_db
-from app.models.domain import Incapacidad, Usuario
-from app.schemas.api_schemas import IncapacidadResponse, IncapacidadCreate
+from app.models.domain import Incapacidad, Usuario, EncuestaSintoma
+from app.schemas.api_schemas import IncapacidadResponse, IncapacidadCreate, EncuestaResponse
 from app.api.dependencies import require_roles, get_current_user
 from app.core.security import decrypt_medical_data
 from app.services.alert_engine import evaluate_high_risk
@@ -15,20 +15,18 @@ router = APIRouter()
 def get_medical_history(
     emp_id: str,
     db: Session = Depends(get_db),
-    current_user: Usuario = Depends(get_current_user)
+    current_user: Usuario = Depends(require_roles(["MEDICO_SST"]))
 ):
     """
     PILAR A: RBAC
     Retorna la historia de incapacidades.
-    Si el rol es LIDER_HRBP, enmascara el diagnóstico.
-    Si el rol es MEDICO_SST, lo desencripta y lo muestra en claro.
+    Endpoint restringido estrictamente para el rol MEDICO_SST.
+    LIDER_HRBP recibirá un error 403 Forbidden.
     """
     registros = db.query(Incapacidad).filter(Incapacidad.empleado_ref == emp_id).all()
     
-    # Procesar resultados en memoria según el rol
     resultados_seguros = []
     for reg in registros:
-        # Copiamos el objeto para no mutar el estado de SQLAlchemy accidentalmente
         datos = {
             "cod_registro": reg.cod_registro,
             "empleado_ref": reg.empleado_ref,
@@ -37,13 +35,8 @@ def get_medical_history(
             "codigo_cie10": reg.codigo_cie10,
             "categoria_salud": reg.categoria_salud,
             "entidad_expedidora": reg.entidad_expedidora,
-            "diagnostico_medico_confidencial": "*** ENMASCARADO ***" # Por defecto
+            "diagnostico_medico_confidencial": decrypt_medical_data(reg.diagnostico_medico_confidencial)
         }
-        
-        if current_user.rol == "MEDICO_SST":
-            # Desencriptar solo para médicos
-            datos["diagnostico_medico_confidencial"] = decrypt_medical_data(reg.diagnostico_medico_confidencial)
-            
         resultados_seguros.append(datos)
         
     return resultados_seguros
@@ -72,3 +65,16 @@ def create_incapacity(
     background_tasks.add_task(evaluate_high_risk, db, emp_id)
     
     return {"message": "Incapacidad registrada. Motor de alertas en ejecución asíncrona."}
+
+@router.get("/{emp_id}/surveys", response_model=List[EncuestaResponse])
+def get_employee_surveys(
+    emp_id: str,
+    db: Session = Depends(get_db),
+    current_user: Usuario = Depends(require_roles(["MEDICO_SST"]))
+):
+    """
+    Retorna el listado de encuestas de síntomas diligenciadas por el empleado.
+    Restringido únicamente al rol MEDICO_SST.
+    """
+    encuestas = db.query(EncuestaSintoma).filter(EncuestaSintoma.codigo_empleado == emp_id).all()
+    return encuestas
