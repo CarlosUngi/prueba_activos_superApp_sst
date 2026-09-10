@@ -22,7 +22,6 @@ def load_to_postgres(df: pd.DataFrame, table_name: str):
     """Carga un DataFrame a PostgreSQL"""
     engine = create_engine(DATABASE_URI)
     try:
-        # Usamos if_exists='replace' para facilitar pruebas locales, 
         df.to_sql(table_name, engine, if_exists='append', index=False)
         print(f"✅ Datos cargados exitosamente en la tabla: {table_name} ({len(df)} registros)")
     except Exception as e:

@@ -6,8 +6,15 @@ import re
 # FUNCIONES PURAS DE LIMPIEZA (ETL)
 # ==========================================
 
+def init_error_tracking(df: pd.DataFrame) -> pd.DataFrame:
+    """Inicializa las columnas para tracking de errores"""
+    df = df.copy()
+    # Guardamos el índice original como número de fila (sumamos 2 para coincidir con Excel/CSV con header)
+    df['numero_fila'] = df.index + 2 
+    df['errores_validacion'] = ""
+    return df
+
 def _extract_id(val):
-    """Extrae números y formatea a EMP-XXX"""
     if pd.isna(val): return np.nan
     val_str = str(val)
     match = re.search(r'(\d+)', val_str)
@@ -17,52 +24,67 @@ def _extract_id(val):
     return val_str
 
 def clean_employee_ids(df: pd.DataFrame, col_name: str) -> pd.DataFrame:
-    """Estandariza los IDs de empleado"""
     df = df.copy()
     if col_name in df.columns:
+        original = df[col_name].astype(str)
         df[col_name] = df[col_name].apply(_extract_id)
+        
+        failed_mask = df[col_name].isna() & (original != 'nan') & (original != '')
+        if failed_mask.any():
+            df.loc[failed_mask, 'errores_validacion'] += "[ID '" + original[failed_mask] + "'] inválido "
     return df
 
 def clean_strings_capitalize(df: pd.DataFrame, columns: list) -> pd.DataFrame:
-    """Convierte strings a Capitalize eliminando espacios en los extremos"""
     df = df.copy()
     for col in columns:
         if col in df.columns:
             df[col] = df[col].astype(str).str.strip().str.capitalize()
-            # Reemplazar string 'Nan' generados por astype
             df[col] = df[col].replace({'Nan': np.nan, 'None': np.nan})
     return df
 
 def parse_dates_standard(df: pd.DataFrame, columns: list) -> pd.DataFrame:
-    """Unifica formatos de fecha a YYYY-MM-DD"""
     df = df.copy()
     for col in columns:
         if col in df.columns:
-            # dayfirst=True ayuda con los formatos DD/MM/YYYY
-            df[col] = pd.to_datetime(df[col], dayfirst=True, errors='coerce').dt.date
+            original = df[col].astype(str)
+            parsed = pd.to_datetime(df[col], format='mixed', dayfirst=True, errors='coerce').dt.date
+            
+            failed_mask = df[col].notna() & (df[col] != '') & parsed.isna()
+            if failed_mask.any():
+                df.loc[failed_mask, 'errores_validacion'] += "[Fecha '" + original[failed_mask] + f"' no procesable en {col}] "
+            
+            df[col] = parsed
     return df
 
 def extract_numeric_days(df: pd.DataFrame, col_name: str) -> pd.DataFrame:
-    """Extrae solo el número de campos como '2 dias', '15'"""
     df = df.copy()
     if col_name in df.columns:
-        df[col_name] = df[col_name].astype(str).str.extract(r'(\d+)')[0].astype(float)
+        original = df[col_name].astype(str)
+        extracted = df[col_name].astype(str).str.extract(r'(\d+)')[0].astype(float)
+        
+        failed_mask = df[col_name].notna() & (df[col_name] != '') & extracted.isna()
+        if failed_mask.any():
+            df.loc[failed_mask, 'errores_validacion'] += "[Valor '" + original[failed_mask] + f"' no numérico en {col_name}] "
+        
+        df[col_name] = extracted
     return df
 
 def map_boolean_values(df: pd.DataFrame, col_name: str) -> pd.DataFrame:
-    """Mapea valores variados a True/False"""
     df = df.copy()
     if col_name in df.columns:
+        original = df[col_name].astype(str)
         mapping = {
             'si': True, 's': True, '1': True, 'yes': True,
             'no': False, 'n': False, '0': False
         }
-        # A minúsculas y quitar espacios para mapear seguro
         df[col_name] = df[col_name].astype(str).str.lower().str.strip().map(mapping)
+        
+        failed_mask = df[col_name].isna() & (original != 'nan') & (original != '')
+        if failed_mask.any():
+            df.loc[failed_mask, 'errores_validacion'] += "[Booleano '" + original[failed_mask] + f"' no reconocido en {col_name}] "
     return df
 
 def map_pain_levels(df: pd.DataFrame, col_name: str) -> pd.DataFrame:
-    """Mapea niveles de dolor en texto a escala numérica (1-10)"""
     df = df.copy()
     if col_name in df.columns:
         def _convert_pain(val):
@@ -70,12 +92,18 @@ def map_pain_levels(df: pd.DataFrame, col_name: str) -> pd.DataFrame:
             if val_str == 'bajo': return 3
             if val_str == 'medio': return 5
             if val_str == 'alto': return 8
-            # Si es numérico, intentamos retornarlo
             try:
                 return float(val)
             except ValueError:
                 return np.nan
+                
+        original = df[col_name].astype(str)
         df[col_name] = df[col_name].apply(_convert_pain)
+        
+        failed_mask = df[col_name].isna() & (original != 'nan') & (original != '')
+        if failed_mask.any():
+            df.loc[failed_mask, 'errores_validacion'] += "[Nivel de dolor '" + original[failed_mask] + f"' no mapeable en {col_name}] "
+        
     return df
 
 # ==========================================
@@ -84,14 +112,16 @@ def map_pain_levels(df: pd.DataFrame, col_name: str) -> pd.DataFrame:
 
 def process_empleados(df: pd.DataFrame) -> pd.DataFrame:
     return (
-        df.pipe(clean_employee_ids, 'ID_Empleado')
+        df.pipe(init_error_tracking)
+          .pipe(clean_employee_ids, 'ID_Empleado')
           .pipe(clean_strings_capitalize, ['Area_Trabajo', 'Cargo'])
           .pipe(parse_dates_standard, ['Fecha_Ingreso'])
     )
 
 def process_incapacidades(df: pd.DataFrame) -> pd.DataFrame:
     return (
-        df.pipe(clean_employee_ids, 'EMPLEADO_REF')
+        df.pipe(init_error_tracking)
+          .pipe(clean_employee_ids, 'EMPLEADO_REF')
           .pipe(parse_dates_standard, ['FECHA_INICIO_INCAPACIDAD'])
           .pipe(extract_numeric_days, 'DIAS_AUSENCIA')
           .pipe(clean_strings_capitalize, ['CATEGORIA_SALUD', 'ENTIDAD_EXPEDIDORA'])
@@ -99,7 +129,8 @@ def process_incapacidades(df: pd.DataFrame) -> pd.DataFrame:
 
 def process_encuestas(df: pd.DataFrame) -> pd.DataFrame:
     return (
-        df.pipe(clean_employee_ids, 'CODIGO_EMPLEADO')
+        df.pipe(init_error_tracking)
+          .pipe(clean_employee_ids, 'CODIGO_EMPLEADO')
           .pipe(parse_dates_standard, ['FECHA_ENCUESTA'])
           .pipe(map_pain_levels, 'NIVEL_DOLOR_PERCIBIDO')
           .pipe(map_boolean_values, 'REQUIERE_VALORACION_MEDICA')

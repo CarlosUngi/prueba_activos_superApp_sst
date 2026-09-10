@@ -1,0 +1,32 @@
+
+--- ERRORES EN ARCHIVO: RAW_HISTORICO_INCAPACIDADES_CONFIDENCIAL.csv ---
+Fila 215: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
+Fila 276: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
+Fila 293: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
+Fila 305: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
+Fila 325: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
+Fila 327: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
+Fila 345: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
+
+--- ERRORES EN ARCHIVO: RAW_HISTORICO_INCAPACIDADES_CONFIDENCIAL.csv ---
+Fila 215 | Motivo: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
+Registro completo: {'COD_REGISTRO': 'INC-0214', 'EMPLEADO_REF': 'EMP-090', 'FECHA_INICIO_INCAPACIDAD': NaT, 'DIAS_AUSENCIA': 8.0, 'CODIGO_CIE10': 'J06.9', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Infeccion aguda de las vias respiratorias superiores', 'CATEGORIA_SALUD': 'Respiratorio', 'ENTIDAD_EXPEDIDORA': nan}
+--------------------------------------------------------------------------------
+Fila 276 | Motivo: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
+Registro completo: {'COD_REGISTRO': 'INC-0275', 'EMPLEADO_REF': 'EMP-063', 'FECHA_INICIO_INCAPACIDAD': NaT, 'DIAS_AUSENCIA': 30.0, 'CODIGO_CIE10': 'G43.9', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Migraña no especificada', 'CATEGORIA_SALUD': 'Neurologico', 'ENTIDAD_EXPEDIDORA': nan}
+--------------------------------------------------------------------------------
+Fila 293 | Motivo: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
+Registro completo: {'COD_REGISTRO': 'INC-0292', 'EMPLEADO_REF': 'EMP-074', 'FECHA_INICIO_INCAPACIDAD': NaT, 'DIAS_AUSENCIA': 3.0, 'CODIGO_CIE10': 'Z57.8', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Exposicion ocupacional a otros factores de riesgo', 'CATEGORIA_SALUD': 'Ocupacional', 'ENTIDAD_EXPEDIDORA': 'Sura eps'}
+--------------------------------------------------------------------------------
+Fila 305 | Motivo: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
+Registro completo: {'COD_REGISTRO': 'INC-0304', 'EMPLEADO_REF': 'EMP-043', 'FECHA_INICIO_INCAPACIDAD': NaT, 'DIAS_AUSENCIA': 2.0, 'CODIGO_CIE10': 'M54.5', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Lumbago no especificado', 'CATEGORIA_SALUD': 'Musculoesqueletico', 'ENTIDAD_EXPEDIDORA': 'Compensar'}
+--------------------------------------------------------------------------------
+Fila 325 | Motivo: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
+Registro completo: {'COD_REGISTRO': 'INC-0324', 'EMPLEADO_REF': 'EMP-063', 'FECHA_INICIO_INCAPACIDAD': NaT, 'DIAS_AUSENCIA': 15.0, 'CODIGO_CIE10': 'F41.1', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Trastorno de ansiedad generalizada', 'CATEGORIA_SALUD': 'Salud mental', 'ENTIDAD_EXPEDIDORA': 'Sanitas'}
+--------------------------------------------------------------------------------
+Fila 327 | Motivo: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
+Registro completo: {'COD_REGISTRO': 'INC-0326', 'EMPLEADO_REF': 'EMP-107', 'FECHA_INICIO_INCAPACIDAD': NaT, 'DIAS_AUSENCIA': 1.0, 'CODIGO_CIE10': nan, 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Migraña no especificada', 'CATEGORIA_SALUD': 'Neurologico', 'ENTIDAD_EXPEDIDORA': 'Sanitas'}
+--------------------------------------------------------------------------------
+Fila 345 | Motivo: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
+Registro completo: {'COD_REGISTRO': 'INC-0344', 'EMPLEADO_REF': 'EMP-087', 'FECHA_INICIO_INCAPACIDAD': NaT, 'DIAS_AUSENCIA': 3.0, 'CODIGO_CIE10': 'F41.1', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Trastorno de ansiedad generalizada', 'CATEGORIA_SALUD': 'Salud mental', 'ENTIDAD_EXPEDIDORA': 'Eps sura'}
+--------------------------------------------------------------------------------
