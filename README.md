@@ -41,9 +41,16 @@ El backend expone la API REST, implementa RBAC y el motor de alertas.
 ```bash
 cd transactional_api
 ```
-2. Activa el entorno e inicia el servidor:
+2. Activa el entorno:
 ```bash
 source .venv/bin/activate
+```
+3. Ejecuta el script de inicialización (seed) para crear las tablas base y los usuarios de prueba:
+```bash
+python seed.py
+```
+4. Inicia el servidor:
+```bash
 uvicorn app.main:app --reload
 ```
 La documentacion de la API estara disponible en: http://localhost:8000/docs
