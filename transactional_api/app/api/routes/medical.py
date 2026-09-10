@@ -15,13 +15,13 @@ router = APIRouter()
 def get_medical_history(
     emp_id: str,
     db: Session = Depends(get_db),
-    current_user: Usuario = Depends(require_roles(["MEDICO_SST"]))
+    current_user: Usuario = Depends(require_roles(["MEDICO_SST", "MEDICO_OCUPACIONAL", "ADMIN_SST"]))
 ):
     """
     PILAR A: RBAC
     Retorna la historia de incapacidades.
-    Endpoint restringido estrictamente para el rol MEDICO_SST.
-    LIDER_HRBP recibirá un error 403 Forbidden.
+    Endpoint restringido estrictamente para el rol Médico y sus homólogos.
+    LIDER_HRBP y similares recibirán un error 403 Forbidden.
     """
     registros = db.query(Incapacidad).filter(Incapacidad.empleado_ref == emp_id).all()
     
@@ -48,7 +48,7 @@ def create_incapacity(
     incapacidad: IncapacidadCreate,
     background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
-    current_user: Usuario = Depends(require_roles(["MEDICO_SST"])) # Solo médicos pueden crear
+    current_user: Usuario = Depends(require_roles(["MEDICO_SST", "MEDICO_OCUPACIONAL", "ADMIN_SST"])) # Solo médicos pueden crear
 ):
     """
     PILAR B: Motor de alertas
@@ -70,11 +70,11 @@ def create_incapacity(
 def get_employee_surveys(
     emp_id: str,
     db: Session = Depends(get_db),
-    current_user: Usuario = Depends(require_roles(["MEDICO_SST"]))
+    current_user: Usuario = Depends(require_roles(["MEDICO_SST", "MEDICO_OCUPACIONAL", "ADMIN_SST"]))
 ):
     """
     Retorna el listado de encuestas de síntomas diligenciadas por el empleado.
-    Restringido únicamente al rol MEDICO_SST.
+    Restringido únicamente al rol Médico y sus homólogos.
     """
     encuestas = db.query(EncuestaSintoma).filter(EncuestaSintoma.codigo_empleado == emp_id).all()
     return encuestas

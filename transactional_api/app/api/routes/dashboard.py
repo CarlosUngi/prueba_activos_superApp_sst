@@ -4,14 +4,19 @@ from sqlalchemy import func
 
 from app.database.session import get_db
 from app.models.domain import Incapacidad, AlertaTemprana
-from app.api.dependencies import get_current_user
+from app.api.dependencies import require_roles
 
 router = APIRouter()
+
+TODOS_LOS_ROLES = [
+    "LIDER_HRBP", "LIDER_AREA", "RELACIONES_LABORALES", 
+    "MEDICO_SST", "MEDICO_OCUPACIONAL", "ADMIN_SST"
+]
 
 @router.get("/metrics")
 def get_dashboard_metrics(
     db: Session = Depends(get_db),
-    current_user = Depends(get_current_user) # Ambos roles pueden entrar
+    current_user = Depends(require_roles(TODOS_LOS_ROLES))
 ):
     """
     PILAR C: Dashboard
