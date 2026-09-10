@@ -57,7 +57,7 @@ def main():
         
         # Estandarizar nombre de columnas para PostgreSQL (minúsculas)
         df_emp_valid.columns = df_emp_valid.columns.str.lower()
-        load_to_postgres(df_emp_valid, 'empleados')
+        load_to_postgres(df_emp_valid, 'empleados', 'id_empleado')
     else:
         print(f"Archivo no encontrado: {empleados_path}")
 
@@ -78,7 +78,7 @@ def main():
         df_inc_secured = encrypt_column(df_inc_valid, 'DIAGNOSTICO_MEDICO_CONFIDENCIAL')
         
         df_inc_secured.columns = df_inc_secured.columns.str.lower()
-        load_to_postgres(df_inc_secured, 'incapacidades')
+        load_to_postgres(df_inc_secured, 'incapacidades', 'cod_registro')
     else:
         print(f"Archivo no encontrado: {incapacidades_path}")
 
@@ -94,7 +94,7 @@ def main():
         
         df_enc_valid = filter_and_quarantine(df_enc_clean, "RAW_ENCUESTAS_SINTOMAS_PELIGROS.csv")
         df_enc_valid.columns = df_enc_valid.columns.str.lower()
-        load_to_postgres(df_enc_valid, 'encuestas_sintomas')
+        load_to_postgres(df_enc_valid, 'encuestas_sintomas', 'id_respuesta')
     else:
         print(f"Archivo no encontrado: {encuestas_path}")
 
