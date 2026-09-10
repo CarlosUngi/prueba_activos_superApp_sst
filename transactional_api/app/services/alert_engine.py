@@ -9,8 +9,7 @@ def evaluate_high_risk(db: Session, empleado_id: str):
     """
     hoy = datetime.now().date()
     hace_60_dias = hoy - timedelta(days=60)
-    hace_180_dias = hoy - timedelta(days=730)  # Mantenemos 2 años para encuestas porque rara vez se hacen
-    
+    hace_180_dias = hoy - timedelta(days=180)  
     # 1. Obtener los datos del empleado
     conteo_incapacidades_60d = db.query(Incapacidad).filter(
         Incapacidad.empleado_ref == empleado_id,
