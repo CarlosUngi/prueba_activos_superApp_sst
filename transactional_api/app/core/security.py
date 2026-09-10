@@ -21,9 +21,15 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
 
 def decrypt_medical_data(encrypted_text: str) -> str:
     """Desencripta un dato usando Fernet."""
-    if not encrypted_text:
-        return None
+    if not encrypted_text or not isinstance(encrypted_text, str):
+        return ""
     try:
         return cipher_suite.decrypt(encrypted_text.encode()).decode()
     except Exception:
-        return "*** ERROR DESCIFRANDO ***"
+        return encrypted_text  # Si no está encriptado (insertado por defecto), devolvemos el texto plano
+
+def encrypt_medical_data(plain_text: str) -> str:
+    """Encripta un dato usando Fernet."""
+    if not plain_text:
+        return ""
+    return cipher_suite.encrypt(plain_text.encode()).decode()

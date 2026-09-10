@@ -8,13 +8,13 @@ def evaluate_high_risk(db: Session, empleado_id: str):
     Cruza información de dos fuentes distintas para detectar un riesgo alto.
     """
     hoy = datetime.now().date()
-    hace_90_dias = hoy - timedelta(days=90)
-    hace_180_dias = hoy - timedelta(days=180)
+    hace_60_dias = hoy - timedelta(days=60)
+    hace_180_dias = hoy - timedelta(days=730)  # Mantenemos 2 años para encuestas porque rara vez se hacen
     
     # 1. Obtener los datos del empleado
-    conteo_incapacidades = db.query(Incapacidad).filter(
+    conteo_incapacidades_60d = db.query(Incapacidad).filter(
         Incapacidad.empleado_ref == empleado_id,
-        Incapacidad.fecha_inicio_incapacidad >= hace_90_dias
+        Incapacidad.fecha_inicio_incapacidad >= hace_60_dias
     ).count()
     
     ultima_encuesta = db.query(EncuestaSintoma).filter(
@@ -24,10 +24,17 @@ def evaluate_high_risk(db: Session, empleado_id: str):
 
     alertas_a_crear = []
 
-    # REGLA 1: Correlación (Ausentismo recurrente + Dolor severo)
-    if conteo_incapacidades > 1 and ultima_encuesta and ultima_encuesta.nivel_dolor_percibido and ultima_encuesta.nivel_dolor_percibido >= 7:
+    # REGLA 1: Correlación (Ausentismo + Dolor severo)
+    if conteo_incapacidades_60d >= 1 and ultima_encuesta and ultima_encuesta.nivel_dolor_percibido and ultima_encuesta.nivel_dolor_percibido >= 7:
         alertas_a_crear.append({
-            "motivo": f"Correlación Detectada: {conteo_incapacidades} incapacidades recientes y dolor crónico (Nivel {ultima_encuesta.nivel_dolor_percibido}). Acción sugerida: Programar examen médico ocupacional.",
+            "motivo": f"Correlación Detectada: Dolor crónico (Nivel {ultima_encuesta.nivel_dolor_percibido}) y reciente incapacidad. Acción: Examen ocupacional.",
+            "nivel": "ALTO"
+        })
+
+    # REGLA NUEVA (Por petición tuya): 2 Incapacidades en menos de 60 días
+    if conteo_incapacidades_60d >= 2:
+        alertas_a_crear.append({
+            "motivo": f"Ausentismo Recurrente: El empleado acumula {conteo_incapacidades_60d} incapacidades en los últimos 60 días. Requiere revisión del caso.",
             "nivel": "ALTO"
         })
 

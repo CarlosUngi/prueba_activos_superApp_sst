@@ -6,7 +6,7 @@ from app.database.session import get_db
 from app.models.domain import Incapacidad, Usuario, EncuestaSintoma
 from app.schemas.api_schemas import IncapacidadResponse, IncapacidadCreate, EncuestaResponse
 from app.api.dependencies import require_roles, get_current_user
-from app.core.security import decrypt_medical_data
+from app.core.security import decrypt_medical_data, encrypt_medical_data
 from app.services.alert_engine import evaluate_high_risk
 
 router = APIRouter()
@@ -56,16 +56,30 @@ def create_incapacity(
     from datetime import datetime
     import uuid
     
-    # 1. Simular la inserción de la incapacidad
-    nuevo_id = f"INC-MANUAL-{str(uuid.uuid4())[:4]}"
-    # Aquí iría el guardado en BD...
+    # 1. Guardar la incapacidad real en la base de datos
+    nuevo_id = f"INC-MANUAL-{str(uuid.uuid4())[:6]}"
+    
+    nueva_inc = Incapacidad(
+        cod_registro=nuevo_id,
+        empleado_ref=emp_id,
+        fecha_inicio_incapacidad=incapacidad.fecha_inicio_incapacidad,
+        dias_ausencia=incapacidad.dias_ausencia,
+        codigo_cie10=incapacidad.codigo_cie10,
+        diagnostico_medico_confidencial=encrypt_medical_data(incapacidad.diagnostico_medico_confidencial),
+        categoria_salud=incapacidad.categoria_salud,
+        entidad_expedidora=incapacidad.entidad_expedidora
+    )
+    db.add(nueva_inc)
+    db.commit()
+    db.refresh(nueva_inc)
     
     # 2. Invocamos el Motor de Correlación Sincrónicamente
     alertas_generadas = evaluate_high_risk(db, emp_id)
     
     return {
         "message": "Incapacidad registrada exitosamente.",
-        "alertas_detonadas": alertas_generadas  # El frontend usará esto para mostrar popups
+        "incapacidad_id": nuevo_id,
+        "alertas_detonadas": alertas_generadas
     }
 
 @router.get("/{emp_id}/surveys", response_model=List[EncuestaResponse])

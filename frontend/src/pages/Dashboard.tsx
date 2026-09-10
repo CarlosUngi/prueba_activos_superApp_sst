@@ -39,6 +39,9 @@ export const Dashboard = () => {
     }, [isLider]);
 
     const fetchHistory = () => {
+        setMedicalHistory([]);
+        setEmployeeSurveys([]);
+        
         api.get(`/employees/${searchId}/history`).then(res => {
             setMedicalHistory(res.data);
         }).catch(err => {
@@ -56,17 +59,21 @@ export const Dashboard = () => {
         }
     };
 
-    const handleSimulateIncapacity = () => {
-        const dummyData = {
-            fecha_inicio_incapacidad: new Date().toISOString().split('T')[0],
-            dias_ausencia: 3,
-            codigo_cie10: "M54.5",
-            diagnostico_medico_confidencial: "Lumbago recurrente",
-            categoria_salud: "Trauma / osteomuscular",
-            entidad_expedidora: "EPS Sura"
-        };
-        api.post(`/employees/${searchId}/incapacities`, dummyData)
+    const [showIncapacityModal, setShowIncapacityModal] = useState(false);
+    const [incapacityFormData, setIncapacityFormData] = useState({
+        fecha_inicio_incapacidad: new Date().toISOString().split('T')[0],
+        dias_ausencia: 3,
+        codigo_cie10: "M54.5",
+        diagnostico_medico_confidencial: "Lumbago recurrente",
+        categoria_salud: "Osteomuscular",
+        entidad_expedidora: "EPS Sura"
+    });
+
+    const submitIncapacity = (e: React.FormEvent) => {
+        e.preventDefault();
+        api.post(`/employees/${searchId}/incapacities`, incapacityFormData)
            .then(res => {
+               setShowIncapacityModal(false);
                fetchMetrics();
                fetchHistory();
                fetchDetailedAlerts();
@@ -74,7 +81,7 @@ export const Dashboard = () => {
                if (res.data.alertas_detonadas && res.data.alertas_detonadas.length > 0) {
                    setPopupAlerts(res.data.alertas_detonadas);
                } else {
-                   alert("Incapacidad registrada correctamente. No se generaron alertas de riesgo.");
+                   alert("Incapacidad registrada correctamente en la Base de Datos. No se generaron alertas de riesgo.");
                }
            }).catch(err => alert("Error al registrar incapacidad. Verifique permisos."));
     };
@@ -113,6 +120,84 @@ export const Dashboard = () => {
                                 Entendido
                             </button>
                         </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Modal de Formulario de Incapacidad */}
+            {showIncapacityModal && (
+                <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+                    <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden border border-gray-200">
+                        <div className="bg-emerald-600 p-4 flex items-center gap-3 text-white">
+                            <PlusCircle size={24} />
+                            <h2 className="text-xl font-bold">Registrar Incapacidad: {searchId}</h2>
+                        </div>
+                        <form onSubmit={submitIncapacity} className="p-6 space-y-4">
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-xs font-bold text-gray-700 mb-1">Fecha de Inicio</label>
+                                    <input type="date" required
+                                        className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                                        value={incapacityFormData.fecha_inicio_incapacidad}
+                                        onChange={e => setIncapacityFormData({...incapacityFormData, fecha_inicio_incapacidad: e.target.value})}
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold text-gray-700 mb-1">Días Ausencia</label>
+                                    <input type="number" required min="1"
+                                        className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                                        value={incapacityFormData.dias_ausencia}
+                                        onChange={e => setIncapacityFormData({...incapacityFormData, dias_ausencia: parseInt(e.target.value)})}
+                                    />
+                                </div>
+                            </div>
+                            
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-xs font-bold text-gray-700 mb-1">Código CIE-10</label>
+                                    <input type="text" required
+                                        className="w-full border border-gray-300 rounded px-3 py-2 text-sm font-mono"
+                                        value={incapacityFormData.codigo_cie10}
+                                        onChange={e => setIncapacityFormData({...incapacityFormData, codigo_cie10: e.target.value})}
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold text-gray-700 mb-1">Categoría Salud</label>
+                                    <input type="text" required
+                                        className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                                        value={incapacityFormData.categoria_salud}
+                                        onChange={e => setIncapacityFormData({...incapacityFormData, categoria_salud: e.target.value})}
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="block text-xs font-bold text-gray-700 mb-1">Diagnóstico Confidencial</label>
+                                <textarea required rows={2}
+                                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                                    value={incapacityFormData.diagnostico_medico_confidencial}
+                                    onChange={e => setIncapacityFormData({...incapacityFormData, diagnostico_medico_confidencial: e.target.value})}
+                                />
+                            </div>
+                            
+                            <div>
+                                <label className="block text-xs font-bold text-gray-700 mb-1">Entidad Expedidora</label>
+                                <input type="text" required
+                                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                                    value={incapacityFormData.entidad_expedidora}
+                                    onChange={e => setIncapacityFormData({...incapacityFormData, entidad_expedidora: e.target.value})}
+                                />
+                            </div>
+
+                            <div className="flex gap-3 justify-end mt-6">
+                                <button type="button" onClick={() => setShowIncapacityModal(false)} className="px-4 py-2 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded font-bold transition-colors">
+                                    Cancelar
+                                </button>
+                                <button type="submit" className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded font-bold shadow transition-colors">
+                                    Guardar en BD
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             )}
@@ -247,7 +332,7 @@ export const Dashboard = () => {
                         
                         {!isLider && (
                             <button 
-                                onClick={handleSimulateIncapacity} 
+                                onClick={() => setShowIncapacityModal(true)} 
                                 className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-lg font-bold flex items-center gap-2 transition-colors ml-auto shadow-sm"
                             >
                                 <PlusCircle size={18} /> Registrar Incapacidad (Demo Motor)
@@ -255,7 +340,7 @@ export const Dashboard = () => {
                         )}
                     </div>
 
-                    {medicalHistory.length > 0 && (
+                    {medicalHistory.length > 0 ? (
                         <div className="overflow-x-auto rounded-lg border border-gray-200">
                             <table className="w-full text-left border-collapse bg-white">
                                 <thead>
@@ -284,10 +369,14 @@ export const Dashboard = () => {
                                 </tbody>
                             </table>
                         </div>
+                    ) : (
+                        <div className="p-4 bg-gray-50 text-gray-500 rounded-lg text-center border border-gray-200">
+                            No se encontraron registros de incapacidades para este empleado.
+                        </div>
                     )}
 
                     {/* Historial de Encuestas (Pilar A - Médico) */}
-                    {employeeSurveys.length > 0 && !isLider && (
+                    {employeeSurveys.length > 0 && !isLider ? (
                         <div className="mt-8">
                             <h3 className="text-md font-bold flex items-center gap-2 text-emerald-800 mb-4">
                                 <FileText size={18} /> Historial de Autoreporte de Síntomas
@@ -331,7 +420,11 @@ export const Dashboard = () => {
                                 </table>
                             </div>
                         </div>
-                    )}
+                    ) : !isLider ? (
+                        <div className="mt-8 p-4 bg-gray-50 text-gray-500 rounded-lg text-center border border-gray-200">
+                            No se encontraron encuestas de síntomas para este empleado.
+                        </div>
+                    ) : null}
 
                 </section>
 
