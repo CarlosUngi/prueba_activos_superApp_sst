@@ -9,7 +9,7 @@ import re
 def init_error_tracking(df: pd.DataFrame) -> pd.DataFrame:
     """Inicializa las columnas para tracking de errores"""
     df = df.copy()
-    # Guardamos el índice original como número de fila (sumamos 2 para coincidir con Excel/CSV con header)
+    # Guardamos el índice original como número de fila 
     df['numero_fila'] = df.index + 2 
     df['errores_validacion'] = ""
     return df

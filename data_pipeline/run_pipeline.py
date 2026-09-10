@@ -48,7 +48,7 @@ def main():
     if os.path.exists(empleados_path):
         df_emp = pd.read_csv(empleados_path)
         df_emp_clean = process_empleados(df_emp)
-        df_emp_clean = check_not_null(df_emp_clean, 'ID_Empleado') # Validar PK
+        df_emp_clean = check_not_null(df_emp_clean, 'ID_Empleado') 
         
         df_emp_valid = filter_and_quarantine(df_emp_clean, "RAW_BD_EMPLEADOS.csv")
         

@@ -28,7 +28,7 @@ def get_dashboard_metrics(
     # 2. Empleados con Alertas Tempranas activas
     alertas = db.query(AlertaTemprana).count()
     
-    # 3. Top departamentos con ausentismo (Simulado en la BD actual cruzando tablas)
+    # 3. Top departamentos con ausentismo
     # Para simplicidad, agruparemos por Categoria de Salud
     ausentismo_categoria = db.query(
         Incapacidad.categoria_salud,
@@ -37,11 +37,29 @@ def get_dashboard_metrics(
     
     categorias = [{"categoria": r[0], "dias": r[1]} for r in ausentismo_categoria]
 
+    # 4. Cálculo de Casos Activos vs Cerrados
+    from datetime import datetime, timedelta
+    hoy = datetime.now().date()
+    todas_incapacidades = db.query(Incapacidad.fecha_inicio_incapacidad, Incapacidad.dias_ausencia).all()
+    
+    casos_activos = 0
+    casos_cerrados = 0
+    
+    for inc in todas_incapacidades:
+        if inc.fecha_inicio_incapacidad and inc.dias_ausencia:
+            fecha_fin = inc.fecha_inicio_incapacidad + timedelta(days=int(inc.dias_ausencia))
+            if fecha_fin >= hoy:
+                casos_activos += 1
+            else:
+                casos_cerrados += 1
+
     return {
         "rol_actual": current_user.rol,
         "metricas": {
             "total_dias_ausencia": total_dias,
             "casos_riesgo_alto": alertas,
+            "casos_activos": casos_activos,
+            "casos_cerrados": casos_cerrados,
             "ausentismo_por_categoria": categorias
         }
     }

@@ -9,7 +9,7 @@ def evaluate_high_risk(db: Session, empleado_id: str):
     """
     hoy = datetime.now().date()
     hace_60_dias = hoy - timedelta(days=60)
-    hace_180_dias = hoy - timedelta(days=180)  
+    hace_180_dias = hoy - timedelta(days=730)  
     # 1. Obtener los datos del empleado
     conteo_incapacidades_60d = db.query(Incapacidad).filter(
         Incapacidad.empleado_ref == empleado_id,
@@ -30,7 +30,7 @@ def evaluate_high_risk(db: Session, empleado_id: str):
             "nivel": "ALTO"
         })
 
-    # REGLA NUEVA (Por petición tuya): 2 Incapacidades en menos de 60 días
+    # REGLA NUEVA : 2 Incapacidades en menos de 60 días
     if conteo_incapacidades_60d >= 2:
         alertas_a_crear.append({
             "motivo": f"Ausentismo Recurrente: El empleado acumula {conteo_incapacidades_60d} incapacidades en los últimos 60 días. Requiere revisión del caso.",
@@ -46,7 +46,7 @@ def evaluate_high_risk(db: Session, empleado_id: str):
 
     alertas_generadas = []
 
-    # Guardar las alertas (verificando que no se dupliquen el mismo día para el mismo motivo)
+    # Guardar las alertas 
     for alerta_data in alertas_a_crear:
         alerta_existente = db.query(AlertaTemprana).filter(
             AlertaTemprana.empleado_ref == empleado_id,

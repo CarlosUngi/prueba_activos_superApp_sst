@@ -8,6 +8,8 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 interface Metrics {
     total_dias_ausencia: number;
     casos_riesgo_alto: number;
+    casos_activos: number;
+    casos_cerrados: number;
     ausentismo_por_categoria: { categoria: string, dias: number }[];
 }
 
@@ -220,41 +222,68 @@ export const Dashboard = () => {
 
             <div className="p-6 max-w-7xl mx-auto space-y-8">
                 
+                
                 {/* PILAR C: MÉTRICAS GENERALES */}
+                {isLider && (
+                <>
                 <section>
                     <h2 className="text-lg font-bold text-gray-700 mb-4">Panel de Control (Vista General)</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex items-center gap-5 hover:shadow-md transition-shadow">
-                            <div className="bg-blue-100 p-4 rounded-full"><Users size={32} className="text-blue-600" /></div>
-                            <div>
-                                <p className="text-gray-500 text-sm font-medium uppercase tracking-wide">Días Acumulados de Ausentismo</p>
-                                <h2 className="text-4xl font-black text-gray-800">{metrics.total_dias_ausencia}</h2>
-                            </div>
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col gap-2 hover:shadow-md transition-shadow">
+                            <p className="text-gray-500 text-xs font-medium uppercase tracking-wide">Días de Ausentismo</p>
+                            <h2 className="text-3xl font-black text-gray-800">{metrics.total_dias_ausencia}</h2>
                         </div>
-                        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex items-center gap-5 hover:shadow-md transition-shadow">
-                            <div className="bg-red-100 p-4 rounded-full"><AlertTriangle size={32} className="text-red-600" /></div>
-                            <div>
-                                <p className="text-gray-500 text-sm font-medium uppercase tracking-wide">Alertas de Riesgo Alto</p>
-                                <h2 className="text-4xl font-black text-gray-800">{metrics.casos_riesgo_alto}</h2>
-                            </div>
+                        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col gap-2 hover:shadow-md transition-shadow">
+                            <p className="text-gray-500 text-xs font-medium uppercase tracking-wide">Alertas de Riesgo</p>
+                            <h2 className="text-3xl font-black text-red-600">{metrics.casos_riesgo_alto}</h2>
+                        </div>
+                        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col gap-2 hover:shadow-md transition-shadow">
+                            <p className="text-gray-500 text-xs font-medium uppercase tracking-wide">Casos Activos (Ausentes)</p>
+                            <h2 className="text-3xl font-black text-blue-600">{metrics.casos_activos}</h2>
+                        </div>
+                        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col gap-2 hover:shadow-md transition-shadow">
+                            <p className="text-gray-500 text-xs font-medium uppercase tracking-wide">Casos Cerrados (Regresaron)</p>
+                            <h2 className="text-3xl font-black text-emerald-600">{metrics.casos_cerrados}</h2>
                         </div>
                     </div>
                 </section>
 
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                    <h2 className="text-lg font-bold mb-6 text-gray-700">Distribución de Ausentismo por Categoría</h2>
-                    <div className="h-72">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={metrics.ausentismo_por_categoria}>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-                                <XAxis dataKey="categoria" tick={{fill: '#6b7280', fontSize: 12}} />
-                                <YAxis tick={{fill: '#6b7280', fontSize: 12}} />
-                                <Tooltip cursor={{fill: '#f3f4f6'}} contentStyle={{borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'}} />
-                                <Bar dataKey="dias" fill="#3b82f6" radius={[4, 4, 0, 0]} barSize={40} />
-                            </BarChart>
-                        </ResponsiveContainer>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                        <h2 className="text-lg font-bold mb-6 text-gray-700">Ausentismo por Categoría</h2>
+                        <div className="h-64">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <BarChart data={metrics.ausentismo_por_categoria}>
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                                    <XAxis dataKey="categoria" tick={{fill: '#6b7280', fontSize: 12}} />
+                                    <YAxis tick={{fill: '#6b7280', fontSize: 12}} />
+                                    <Tooltip cursor={{fill: '#f3f4f6'}} contentStyle={{borderRadius: '8px', border: 'none'}} />
+                                    <Bar dataKey="dias" fill="#3b82f6" radius={[4, 4, 0, 0]} barSize={40} />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </div>
+                    
+                    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                        <h2 className="text-lg font-bold mb-6 text-gray-700">Estado de Incapacidades (Activos vs Cerrados)</h2>
+                        <div className="h-64">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <BarChart data={[
+                                    { estado: 'Activos', casos: metrics.casos_activos },
+                                    { estado: 'Cerrados', casos: metrics.casos_cerrados }
+                                ]}>
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                                    <XAxis dataKey="estado" tick={{fill: '#6b7280', fontSize: 12}} />
+                                    <YAxis tick={{fill: '#6b7280', fontSize: 12}} />
+                                    <Tooltip cursor={{fill: '#f3f4f6'}} contentStyle={{borderRadius: '8px', border: 'none'}} />
+                                    <Bar dataKey="casos" fill="#10b981" radius={[4, 4, 0, 0]} barSize={60} />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        </div>
                     </div>
                 </div>
+                </>
+                )}
 
                 {/* PILAR B: BANDEJA DE ALERTAS DEL MÉDICO */}
                 {!isLider && (
