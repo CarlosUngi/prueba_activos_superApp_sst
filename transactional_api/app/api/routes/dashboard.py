@@ -45,3 +45,33 @@ def get_dashboard_metrics(
             "ausentismo_por_categoria": categorias
         }
     }
+
+@router.get("/alerts_details")
+def get_detailed_alerts(
+    db: Session = Depends(get_db),
+    current_user = Depends(require_roles(["MEDICO_SST", "MEDICO_OCUPACIONAL", "ADMIN_SST"]))
+):
+    """
+    Retorna el listado completo de alertas tempranas con nombre del empleado.
+    Solo para el Doctor/Admin.
+    """
+    from app.models.domain import Empleado
+    
+    # Hacer JOIN de Alertas con Empleados para traer el nombre
+    resultados = db.query(AlertaTemprana, Empleado).join(
+        Empleado, AlertaTemprana.empleado_ref == Empleado.id_empleado
+    ).order_by(AlertaTemprana.fecha_alerta.desc()).all()
+    
+    lista_alertas = []
+    for alerta, empleado in resultados:
+        lista_alertas.append({
+            "id_alerta": alerta.id,
+            "fecha_alerta": alerta.fecha_alerta,
+            "empleado_id": empleado.id_empleado,
+            "nombre_empleado": empleado.nombre_completo,
+            "cargo": empleado.cargo,
+            "nivel_riesgo": alerta.nivel_riesgo,
+            "motivo": alerta.motivo
+        })
+        
+    return lista_alertas

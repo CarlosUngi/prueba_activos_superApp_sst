@@ -46,25 +46,27 @@ def get_medical_history(
 def create_incapacity(
     emp_id: str,
     incapacidad: IncapacidadCreate,
-    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
-    current_user: Usuario = Depends(require_roles(["MEDICO_SST", "MEDICO_OCUPACIONAL", "ADMIN_SST"])) # Solo médicos pueden crear
+    current_user: Usuario = Depends(require_roles(["MEDICO_SST", "MEDICO_OCUPACIONAL", "ADMIN_SST"]))
 ):
     """
     PILAR B: Motor de alertas
-    Registra incapacidad y detona regla de negocio en Background.
+    Registra incapacidad y detona regla de negocio sincrónicamente para devolver las notificaciones al Frontend.
     """
     from datetime import datetime
     import uuid
     
-    # En un sistema real, la inserción iría aquí (y encriptaríamos el dato antes de guardar).
-    # Simularemos la inserción para el ejercicio:
+    # 1. Simular la inserción de la incapacidad
     nuevo_id = f"INC-MANUAL-{str(uuid.uuid4())[:4]}"
+    # Aquí iría el guardado en BD...
     
-    # Invocamos el Motor de Correlación asíncronamente para que la API responda en 10ms
-    background_tasks.add_task(evaluate_high_risk, db, emp_id)
+    # 2. Invocamos el Motor de Correlación Sincrónicamente
+    alertas_generadas = evaluate_high_risk(db, emp_id)
     
-    return {"message": "Incapacidad registrada. Motor de alertas en ejecución asíncrona."}
+    return {
+        "message": "Incapacidad registrada exitosamente.",
+        "alertas_detonadas": alertas_generadas  # El frontend usará esto para mostrar popups
+    }
 
 @router.get("/{emp_id}/surveys", response_model=List[EncuestaResponse])
 def get_employee_surveys(

@@ -15,13 +15,10 @@ export const Login = () => {
         e.preventDefault();
         setError('');
         try {
-            // FastAPI OAuth2PasswordRequestForm espera application/x-www-form-urlencoded
-            const params = new URLSearchParams();
-            params.append('username', email);
-            params.append('password', password);
-
-            const response = await api.post('/auth/login', params, {
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            // Ahora enviamos un JSON limpio porque simplificamos la API
+            const response = await api.post('/auth/login', {
+                email: email,
+                password: password
             });
             
             // Decodificamos el JWT manualmente rápido (solo para el frontend visual)
