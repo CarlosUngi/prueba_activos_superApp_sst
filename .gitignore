@@ -1,2 +1,33 @@
+# Entornos virtuales
+.env
 .venv
-.pyc
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Node / Frontend
+node_modules/
+dist/
+build/
+.npm/
+
+# IDEs y OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Logs y Cuarentena
+*.log
+data_pipeline/cuarentena_errores.txt
+data_pipeline/cuarentena_errores_example.txt
+
+# Base de datos local
+*.sqlite3
+pgdata/

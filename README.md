@@ -7,7 +7,7 @@ Prototipo funcional para el área de Salud y Seguridad en el Trabajo, desarrolla
 El proyecto está diseñado bajo una **Arquitectura de Capas orientada a microservicios**, priorizando la separación de responsabilidades y la seguridad de los datos confidenciales (RBAC).
 
 *   **`db/`**: Infraestructura (PostgreSQL 16 en Docker).
-*   **`data_pipeline/`**: Microservicio ETL basado en el **Paradigma Funcional** con Pandas. Extrae, limpia, estandariza y encripta (Fernet) los CSV originales antes de insertarlos en BD.
+*   **`data_pipeline/`**: Microservicio ETL basado en el **Paradigma Funcional** con Pandas. Extrae, limpia, estandariza y encripta (FerMédico Ocupacional / Admin SST:net) los CSV originales antes de insertarlos en BD.
 *   **`transactional_api/`**: Backend Transaccional (FastAPI). Expone los endpoints protegidos con JWT. Implementa el Pilar A (Roles) y el Pilar B (Motor de Alertas en segundo plano).
 *   **`frontend/`**: Single Page Application (React 18 + Vite + TailwindCSS v4). Consume la API y muestra dashboards y datos según el nivel de autorización (Pilar C).
 
