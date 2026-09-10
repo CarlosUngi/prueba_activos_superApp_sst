@@ -106,6 +106,24 @@ def map_pain_levels(df: pd.DataFrame, col_name: str) -> pd.DataFrame:
         
     return df
 
+def check_not_null(df: pd.DataFrame, col_name: str) -> pd.DataFrame:
+    """Verifica que un campo obligatorio (como la PK) no esté vacío"""
+    df = df.copy()
+    if col_name in df.columns:
+        missing = df[col_name].isna() | (df[col_name].astype(str).str.strip() == '') | (df[col_name].astype(str) == 'nan')
+        if missing.any():
+            df.loc[missing, 'errores_validacion'] += f"[{col_name} es obligatorio y está vacío] "
+    return df
+
+def check_foreign_key(df: pd.DataFrame, col_name: str, valid_ids: set) -> pd.DataFrame:
+    """Verifica que los IDs existan en el DataFrame maestro (Integridad Referencial)"""
+    df = df.copy()
+    if col_name in df.columns:
+        missing = ~df[col_name].isin(valid_ids) & df[col_name].notna() & (df[col_name].astype(str).str.strip() != '')
+        if missing.any():
+            df.loc[missing, 'errores_validacion'] += "[Referencia Huérfana: ID '" + df.loc[missing, col_name].astype(str) + "'] no existe en empleados "
+    return df
+
 # ==========================================
 # PIPELINES PRINCIPALES POR ARCHIVO
 # ==========================================

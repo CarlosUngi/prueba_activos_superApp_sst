@@ -1,22 +1,82 @@
 
 --- ERRORES EN ARCHIVO: RAW_HISTORICO_INCAPACIDADES_CONFIDENCIAL.csv ---
-Fila 215: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
-Fila 276: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
-Fila 293: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
-Fila 305: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
-Fila 325: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
-Fila 327: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
-Fila 345: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
-
---- ERRORES EN ARCHIVO: RAW_HISTORICO_INCAPACIDADES_CONFIDENCIAL.csv ---
+Fila 21 | Motivo: [Referencia Huérfana: ID 'EMP-115'] no existe en empleados 
+Registro completo: {'COD_REGISTRO': 'INC-0020', 'EMPLEADO_REF': 'EMP-115', 'FECHA_INICIO_INCAPACIDAD': datetime.date(2025, 1, 17), 'DIAS_AUSENCIA': 8.0, 'CODIGO_CIE10': 'Z57.8', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Exposicion ocupacional a otros factores de riesgo', 'CATEGORIA_SALUD': 'Ocupacional', 'ENTIDAD_EXPEDIDORA': 'Eps sura'}
+--------------------------------------------------------------------------------
+Fila 23 | Motivo: [Referencia Huérfana: ID 'EMP-106'] no existe en empleados 
+Registro completo: {'COD_REGISTRO': 'INC-0022', 'EMPLEADO_REF': 'EMP-106', 'FECHA_INICIO_INCAPACIDAD': datetime.date(2026, 1, 19), 'DIAS_AUSENCIA': 15.0, 'CODIGO_CIE10': 'S93.4', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Esguince y torcedura del tobillo', 'CATEGORIA_SALUD': 'Trauma / osteomuscular', 'ENTIDAD_EXPEDIDORA': 'Eps sura'}
+--------------------------------------------------------------------------------
+Fila 30 | Motivo: [Referencia Huérfana: ID 'EMP-109'] no existe en empleados 
+Registro completo: {'COD_REGISTRO': 'INC-0029', 'EMPLEADO_REF': 'EMP-109', 'FECHA_INICIO_INCAPACIDAD': datetime.date(2025, 8, 13), 'DIAS_AUSENCIA': 8.0, 'CODIGO_CIE10': 'F41.1', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Trastorno de ansiedad generalizada', 'CATEGORIA_SALUD': 'Salud mental', 'ENTIDAD_EXPEDIDORA': 'Sanitas'}
+--------------------------------------------------------------------------------
+Fila 62 | Motivo: [Referencia Huérfana: ID 'EMP-109'] no existe en empleados 
+Registro completo: {'COD_REGISTRO': 'INC-0061', 'EMPLEADO_REF': 'EMP-109', 'FECHA_INICIO_INCAPACIDAD': datetime.date(2026, 1, 15), 'DIAS_AUSENCIA': 3.0, 'CODIGO_CIE10': 'M54.5', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Lumbago no especificado', 'CATEGORIA_SALUD': 'Musculoesqueletico', 'ENTIDAD_EXPEDIDORA': nan}
+--------------------------------------------------------------------------------
+Fila 106 | Motivo: [Referencia Huérfana: ID 'EMP-112'] no existe en empleados 
+Registro completo: {'COD_REGISTRO': 'INC-0105', 'EMPLEADO_REF': 'EMP-112', 'FECHA_INICIO_INCAPACIDAD': datetime.date(2025, 8, 2), 'DIAS_AUSENCIA': 15.0, 'CODIGO_CIE10': 'F32.9', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Episodio depresivo no especificado', 'CATEGORIA_SALUD': 'Salud mental', 'ENTIDAD_EXPEDIDORA': 'Eps sura'}
+--------------------------------------------------------------------------------
+Fila 110 | Motivo: [Referencia Huérfana: ID 'EMP-107'] no existe en empleados 
+Registro completo: {'COD_REGISTRO': 'INC-0109', 'EMPLEADO_REF': 'EMP-107', 'FECHA_INICIO_INCAPACIDAD': datetime.date(2025, 1, 22), 'DIAS_AUSENCIA': 5.0, 'CODIGO_CIE10': 'M54.5', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Lumbago no especificado', 'CATEGORIA_SALUD': 'Musculoesqueletico', 'ENTIDAD_EXPEDIDORA': 'Particular'}
+--------------------------------------------------------------------------------
+Fila 129 | Motivo: [Referencia Huérfana: ID 'EMP-119'] no existe en empleados 
+Registro completo: {'COD_REGISTRO': 'INC-0128', 'EMPLEADO_REF': 'EMP-119', 'FECHA_INICIO_INCAPACIDAD': datetime.date(2025, 4, 18), 'DIAS_AUSENCIA': nan, 'CODIGO_CIE10': nan, 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Esguince y torcedura del tobillo', 'CATEGORIA_SALUD': 'Trauma / osteomuscular', 'ENTIDAD_EXPEDIDORA': 'Particular'}
+--------------------------------------------------------------------------------
+Fila 150 | Motivo: [Referencia Huérfana: ID 'EMP-115'] no existe en empleados 
+Registro completo: {'COD_REGISTRO': 'INC-0149', 'EMPLEADO_REF': 'EMP-115', 'FECHA_INICIO_INCAPACIDAD': datetime.date(2025, 4, 20), 'DIAS_AUSENCIA': 2.0, 'CODIGO_CIE10': 'S93.4', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Esguince y torcedura del tobillo', 'CATEGORIA_SALUD': 'Trauma / osteomuscular', 'ENTIDAD_EXPEDIDORA': 'Compensar'}
+--------------------------------------------------------------------------------
+Fila 167 | Motivo: [Referencia Huérfana: ID 'EMP-102'] no existe en empleados 
+Registro completo: {'COD_REGISTRO': 'INC-0166', 'EMPLEADO_REF': 'EMP-102', 'FECHA_INICIO_INCAPACIDAD': datetime.date(2025, 1, 17), 'DIAS_AUSENCIA': 2.0, 'CODIGO_CIE10': 'J06.9', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Infeccion aguda de las vias respiratorias superiores', 'CATEGORIA_SALUD': 'Respiratorio', 'ENTIDAD_EXPEDIDORA': 'Sura eps'}
+--------------------------------------------------------------------------------
+Fila 170 | Motivo: [Referencia Huérfana: ID 'EMP-110'] no existe en empleados 
+Registro completo: {'COD_REGISTRO': 'INC-0169', 'EMPLEADO_REF': 'EMP-110', 'FECHA_INICIO_INCAPACIDAD': datetime.date(2026, 4, 1), 'DIAS_AUSENCIA': nan, 'CODIGO_CIE10': 'Z57.8', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Exposicion ocupacional a otros factores de riesgo', 'CATEGORIA_SALUD': 'Ocupacional', 'ENTIDAD_EXPEDIDORA': 'Compensar'}
+--------------------------------------------------------------------------------
+Fila 172 | Motivo: [Referencia Huérfana: ID 'EMP-120'] no existe en empleados 
+Registro completo: {'COD_REGISTRO': 'INC-0171', 'EMPLEADO_REF': 'EMP-120', 'FECHA_INICIO_INCAPACIDAD': datetime.date(2025, 3, 11), 'DIAS_AUSENCIA': 2.0, 'CODIGO_CIE10': nan, 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Lumbago no especificado', 'CATEGORIA_SALUD': 'Musculoesqueletico', 'ENTIDAD_EXPEDIDORA': 'Particular'}
+--------------------------------------------------------------------------------
+Fila 186 | Motivo: [Referencia Huérfana: ID 'EMP-103'] no existe en empleados 
+Registro completo: {'COD_REGISTRO': 'INC-0185', 'EMPLEADO_REF': 'EMP-103', 'FECHA_INICIO_INCAPACIDAD': datetime.date(2025, 7, 31), 'DIAS_AUSENCIA': 1.0, 'CODIGO_CIE10': 'M54.5', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Lumbago no especificado', 'CATEGORIA_SALUD': 'Musculoesqueletico', 'ENTIDAD_EXPEDIDORA': 'Eps sura'}
+--------------------------------------------------------------------------------
+Fila 188 | Motivo: [Referencia Huérfana: ID 'EMP-109'] no existe en empleados 
+Registro completo: {'COD_REGISTRO': 'INC-0187', 'EMPLEADO_REF': 'EMP-109', 'FECHA_INICIO_INCAPACIDAD': datetime.date(2025, 9, 15), 'DIAS_AUSENCIA': 1.0, 'CODIGO_CIE10': 'S93.4', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Esguince y torcedura del tobillo', 'CATEGORIA_SALUD': 'Trauma / osteomuscular', 'ENTIDAD_EXPEDIDORA': 'Eps sura'}
+--------------------------------------------------------------------------------
+Fila 193 | Motivo: [Referencia Huérfana: ID 'EMP-103'] no existe en empleados 
+Registro completo: {'COD_REGISTRO': 'INC-0192', 'EMPLEADO_REF': 'EMP-103', 'FECHA_INICIO_INCAPACIDAD': datetime.date(2025, 10, 16), 'DIAS_AUSENCIA': 3.0, 'CODIGO_CIE10': 'S93.4', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'RESERVADO', 'CATEGORIA_SALUD': 'Trauma / osteomuscular', 'ENTIDAD_EXPEDIDORA': 'Sanitas'}
+--------------------------------------------------------------------------------
 Fila 215 | Motivo: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
 Registro completo: {'COD_REGISTRO': 'INC-0214', 'EMPLEADO_REF': 'EMP-090', 'FECHA_INICIO_INCAPACIDAD': NaT, 'DIAS_AUSENCIA': 8.0, 'CODIGO_CIE10': 'J06.9', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Infeccion aguda de las vias respiratorias superiores', 'CATEGORIA_SALUD': 'Respiratorio', 'ENTIDAD_EXPEDIDORA': nan}
+--------------------------------------------------------------------------------
+Fila 237 | Motivo: [Referencia Huérfana: ID 'EMP-104'] no existe en empleados 
+Registro completo: {'COD_REGISTRO': 'INC-0236', 'EMPLEADO_REF': 'EMP-104', 'FECHA_INICIO_INCAPACIDAD': datetime.date(2025, 3, 5), 'DIAS_AUSENCIA': 1.0, 'CODIGO_CIE10': nan, 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Exposicion ocupacional a otros factores de riesgo', 'CATEGORIA_SALUD': 'Ocupacional', 'ENTIDAD_EXPEDIDORA': 'Sanitas'}
+--------------------------------------------------------------------------------
+Fila 239 | Motivo: [Referencia Huérfana: ID 'EMP-110'] no existe en empleados 
+Registro completo: {'COD_REGISTRO': 'INC-0238', 'EMPLEADO_REF': 'EMP-110', 'FECHA_INICIO_INCAPACIDAD': datetime.date(2025, 2, 12), 'DIAS_AUSENCIA': 30.0, 'CODIGO_CIE10': nan, 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Episodio depresivo no especificado', 'CATEGORIA_SALUD': 'Salud mental', 'ENTIDAD_EXPEDIDORA': 'Sanitas'}
+--------------------------------------------------------------------------------
+Fila 241 | Motivo: [Referencia Huérfana: ID 'EMP-113'] no existe en empleados 
+Registro completo: {'COD_REGISTRO': 'INC-0240', 'EMPLEADO_REF': 'EMP-113', 'FECHA_INICIO_INCAPACIDAD': datetime.date(2025, 2, 22), 'DIAS_AUSENCIA': 2.0, 'CODIGO_CIE10': 'J06.9', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Infeccion aguda de las vias respiratorias superiores', 'CATEGORIA_SALUD': 'Respiratorio', 'ENTIDAD_EXPEDIDORA': nan}
+--------------------------------------------------------------------------------
+Fila 248 | Motivo: [Referencia Huérfana: ID 'EMP-103'] no existe en empleados 
+Registro completo: {'COD_REGISTRO': 'INC-0247', 'EMPLEADO_REF': 'EMP-103', 'FECHA_INICIO_INCAPACIDAD': datetime.date(2025, 4, 21), 'DIAS_AUSENCIA': 8.0, 'CODIGO_CIE10': 'M54.5', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Lumbago no especificado', 'CATEGORIA_SALUD': 'Musculoesqueletico', 'ENTIDAD_EXPEDIDORA': 'Compensar'}
+--------------------------------------------------------------------------------
+Fila 251 | Motivo: [Referencia Huérfana: ID 'EMP-114'] no existe en empleados 
+Registro completo: {'COD_REGISTRO': 'INC-0250', 'EMPLEADO_REF': 'EMP-114', 'FECHA_INICIO_INCAPACIDAD': datetime.date(2025, 6, 5), 'DIAS_AUSENCIA': 1.0, 'CODIGO_CIE10': 'F32.9', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Episodio depresivo no especificado', 'CATEGORIA_SALUD': 'Salud mental', 'ENTIDAD_EXPEDIDORA': 'Eps sura'}
+--------------------------------------------------------------------------------
+Fila 262 | Motivo: [Referencia Huérfana: ID 'EMP-113'] no existe en empleados 
+Registro completo: {'COD_REGISTRO': 'INC-0261', 'EMPLEADO_REF': 'EMP-113', 'FECHA_INICIO_INCAPACIDAD': datetime.date(2025, 4, 16), 'DIAS_AUSENCIA': 2.0, 'CODIGO_CIE10': 'S93.4', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Esguince y torcedura del tobillo', 'CATEGORIA_SALUD': 'Trauma / osteomuscular', 'ENTIDAD_EXPEDIDORA': 'Sanitas'}
 --------------------------------------------------------------------------------
 Fila 276 | Motivo: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
 Registro completo: {'COD_REGISTRO': 'INC-0275', 'EMPLEADO_REF': 'EMP-063', 'FECHA_INICIO_INCAPACIDAD': NaT, 'DIAS_AUSENCIA': 30.0, 'CODIGO_CIE10': 'G43.9', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Migraña no especificada', 'CATEGORIA_SALUD': 'Neurologico', 'ENTIDAD_EXPEDIDORA': nan}
 --------------------------------------------------------------------------------
+Fila 285 | Motivo: [Referencia Huérfana: ID 'EMP-119'] no existe en empleados 
+Registro completo: {'COD_REGISTRO': 'INC-0284', 'EMPLEADO_REF': 'EMP-119', 'FECHA_INICIO_INCAPACIDAD': datetime.date(2025, 1, 17), 'DIAS_AUSENCIA': 15.0, 'CODIGO_CIE10': 'K29.7', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Gastritis no especificada', 'CATEGORIA_SALUD': 'Gastrointestinal', 'ENTIDAD_EXPEDIDORA': 'Sanitas'}
+--------------------------------------------------------------------------------
 Fila 293 | Motivo: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
 Registro completo: {'COD_REGISTRO': 'INC-0292', 'EMPLEADO_REF': 'EMP-074', 'FECHA_INICIO_INCAPACIDAD': NaT, 'DIAS_AUSENCIA': 3.0, 'CODIGO_CIE10': 'Z57.8', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Exposicion ocupacional a otros factores de riesgo', 'CATEGORIA_SALUD': 'Ocupacional', 'ENTIDAD_EXPEDIDORA': 'Sura eps'}
+--------------------------------------------------------------------------------
+Fila 298 | Motivo: [Referencia Huérfana: ID 'EMP-113'] no existe en empleados 
+Registro completo: {'COD_REGISTRO': 'INC-0297', 'EMPLEADO_REF': 'EMP-113', 'FECHA_INICIO_INCAPACIDAD': datetime.date(2025, 12, 18), 'DIAS_AUSENCIA': 3.0, 'CODIGO_CIE10': 'K29.7', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Gastritis no especificada', 'CATEGORIA_SALUD': 'Gastrointestinal', 'ENTIDAD_EXPEDIDORA': 'Eps sura'}
+--------------------------------------------------------------------------------
+Fila 299 | Motivo: [Referencia Huérfana: ID 'EMP-119'] no existe en empleados 
+Registro completo: {'COD_REGISTRO': 'INC-0298', 'EMPLEADO_REF': 'EMP-119', 'FECHA_INICIO_INCAPACIDAD': datetime.date(2026, 1, 23), 'DIAS_AUSENCIA': 2.0, 'CODIGO_CIE10': 'F41.1', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Trastorno de ansiedad generalizada', 'CATEGORIA_SALUD': 'Salud mental', 'ENTIDAD_EXPEDIDORA': nan}
 --------------------------------------------------------------------------------
 Fila 305 | Motivo: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
 Registro completo: {'COD_REGISTRO': 'INC-0304', 'EMPLEADO_REF': 'EMP-043', 'FECHA_INICIO_INCAPACIDAD': NaT, 'DIAS_AUSENCIA': 2.0, 'CODIGO_CIE10': 'M54.5', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Lumbago no especificado', 'CATEGORIA_SALUD': 'Musculoesqueletico', 'ENTIDAD_EXPEDIDORA': 'Compensar'}
@@ -24,8 +84,11 @@ Registro completo: {'COD_REGISTRO': 'INC-0304', 'EMPLEADO_REF': 'EMP-043', 'FECH
 Fila 325 | Motivo: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
 Registro completo: {'COD_REGISTRO': 'INC-0324', 'EMPLEADO_REF': 'EMP-063', 'FECHA_INICIO_INCAPACIDAD': NaT, 'DIAS_AUSENCIA': 15.0, 'CODIGO_CIE10': 'F41.1', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Trastorno de ansiedad generalizada', 'CATEGORIA_SALUD': 'Salud mental', 'ENTIDAD_EXPEDIDORA': 'Sanitas'}
 --------------------------------------------------------------------------------
-Fila 327 | Motivo: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
+Fila 327 | Motivo: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] [Referencia Huérfana: ID 'EMP-107'] no existe en empleados 
 Registro completo: {'COD_REGISTRO': 'INC-0326', 'EMPLEADO_REF': 'EMP-107', 'FECHA_INICIO_INCAPACIDAD': NaT, 'DIAS_AUSENCIA': 1.0, 'CODIGO_CIE10': nan, 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Migraña no especificada', 'CATEGORIA_SALUD': 'Neurologico', 'ENTIDAD_EXPEDIDORA': 'Sanitas'}
+--------------------------------------------------------------------------------
+Fila 344 | Motivo: [Referencia Huérfana: ID 'EMP-117'] no existe en empleados 
+Registro completo: {'COD_REGISTRO': 'INC-0343', 'EMPLEADO_REF': 'EMP-117', 'FECHA_INICIO_INCAPACIDAD': datetime.date(2025, 6, 23), 'DIAS_AUSENCIA': nan, 'CODIGO_CIE10': 'F32.9', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Episodio depresivo no especificado', 'CATEGORIA_SALUD': 'Salud mental', 'ENTIDAD_EXPEDIDORA': 'Sura eps'}
 --------------------------------------------------------------------------------
 Fila 345 | Motivo: [Fecha '2025-13-45' no procesable en FECHA_INICIO_INCAPACIDAD] 
 Registro completo: {'COD_REGISTRO': 'INC-0344', 'EMPLEADO_REF': 'EMP-087', 'FECHA_INICIO_INCAPACIDAD': NaT, 'DIAS_AUSENCIA': 3.0, 'CODIGO_CIE10': 'F41.1', 'DIAGNOSTICO_MEDICO_CONFIDENCIAL': 'Trastorno de ansiedad generalizada', 'CATEGORIA_SALUD': 'Salud mental', 'ENTIDAD_EXPEDIDORA': 'Eps sura'}

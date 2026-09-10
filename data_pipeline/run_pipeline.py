@@ -5,7 +5,7 @@ import sys
 # Agregar el directorio actual al path para importar módulos correctamente
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from transform import process_empleados, process_incapacidades, process_encuestas
+from transform import process_empleados, process_incapacidades, process_encuestas, check_not_null, check_foreign_key
 from load import load_to_postgres, encrypt_column
 
 def filter_and_quarantine(df: pd.DataFrame, source_name: str) -> pd.DataFrame:
@@ -34,19 +34,27 @@ def filter_and_quarantine(df: pd.DataFrame, source_name: str) -> pd.DataFrame:
 def main():
     print("🚀 Iniciando Pipeline de Datos ETL...")
     
-    # Rutas a los CSV (asumiendo que están en ../data/)
+    # Rutas a los CSV en la raíz del proyecto (../data/)
     data_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
     
     empleados_path = os.path.join(data_dir, "RAW_BD_EMPLEADOS.csv")
     incapacidades_path = os.path.join(data_dir, "RAW_HISTORICO_INCAPACIDADES_CONFIDENCIAL.csv")
     encuestas_path = os.path.join(data_dir, "RAW_ENCUESTAS_SINTOMAS_PELIGROS.csv")
-    
+
+    valid_employee_ids = set()
+
     # 1. EMPLEADOS
     print("\nProcesando Empleados...")
     if os.path.exists(empleados_path):
         df_emp = pd.read_csv(empleados_path)
         df_emp_clean = process_empleados(df_emp)
+        df_emp_clean = check_not_null(df_emp_clean, 'ID_Empleado') # Validar PK
+        
         df_emp_valid = filter_and_quarantine(df_emp_clean, "RAW_BD_EMPLEADOS.csv")
+        
+        # Guardamos la lista de empleados válidos para la integridad referencial
+        valid_employee_ids = set(df_emp_valid['ID_Empleado'].dropna().unique())
+        
         # Estandarizar nombre de columnas para PostgreSQL (minúsculas)
         df_emp_valid.columns = df_emp_valid.columns.str.lower()
         load_to_postgres(df_emp_valid, 'empleados')
@@ -58,6 +66,11 @@ def main():
     if os.path.exists(incapacidades_path):
         df_inc = pd.read_csv(incapacidades_path)
         df_inc_clean = process_incapacidades(df_inc)
+        
+        # Validaciones de BD
+        df_inc_clean = check_not_null(df_inc_clean, 'COD_REGISTRO') # PK
+        df_inc_clean = check_foreign_key(df_inc_clean, 'EMPLEADO_REF', valid_employee_ids) # FK
+        
         df_inc_valid = filter_and_quarantine(df_inc_clean, "RAW_HISTORICO_INCAPACIDADES_CONFIDENCIAL.csv")
         
         # *** ENCRIPTACIÓN ***
@@ -74,6 +87,11 @@ def main():
     if os.path.exists(encuestas_path):
         df_enc = pd.read_csv(encuestas_path)
         df_enc_clean = process_encuestas(df_enc)
+        
+        # Validaciones de BD
+        df_enc_clean = check_not_null(df_enc_clean, 'ID_RESPUESTA') # PK
+        df_enc_clean = check_foreign_key(df_enc_clean, 'CODIGO_EMPLEADO', valid_employee_ids) # FK
+        
         df_enc_valid = filter_and_quarantine(df_enc_clean, "RAW_ENCUESTAS_SINTOMAS_PELIGROS.csv")
         df_enc_valid.columns = df_enc_valid.columns.str.lower()
         load_to_postgres(df_enc_valid, 'encuestas_sintomas')
