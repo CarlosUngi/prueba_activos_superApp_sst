@@ -67,7 +67,7 @@ def evaluate_high_risk(db: Session, empleado_id: str):
                 "nivel": alerta_data["nivel"],
                 "motivo": alerta_data["motivo"]
             })
-            print(f"🚨 ALERTA GATILLADA: {alerta_data['nivel']} para {empleado_id}")
+            print(f"ALERTA GATILLADA: {alerta_data['nivel']} para {empleado_id}")
             
     if alertas_generadas:
         db.commit()

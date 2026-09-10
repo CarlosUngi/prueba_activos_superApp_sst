@@ -16,7 +16,7 @@ def filter_and_quarantine(df: pd.DataFrame, source_name: str) -> pd.DataFrame:
     
     if not df_invalid.empty:
         log_path = os.path.join(os.path.dirname(__file__), "cuarentena_errores.txt")
-        print(f"⚠️ Se encontraron {len(df_invalid)} registros inválidos en {source_name}. Enviando a cuarentena...")
+        print(f"Se encontraron {len(df_invalid)} registros inválidos en {source_name}. Enviando a cuarentena...")
         
         with open(log_path, "a", encoding="utf-8") as f:
             f.write(f"\n--- ERRORES EN ARCHIVO: {source_name} ---\n")
@@ -32,7 +32,7 @@ def filter_and_quarantine(df: pd.DataFrame, source_name: str) -> pd.DataFrame:
     return df_valid.drop(columns=['numero_fila', 'errores_validacion'])
 
 def main():
-    print("🚀 Iniciando Pipeline de Datos ETL...")
+    print("Iniciando Pipeline de Datos ETL...")
     
     # Rutas a los CSV en la raíz del proyecto (../data/)
     data_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
@@ -59,7 +59,7 @@ def main():
         df_emp_valid.columns = df_emp_valid.columns.str.lower()
         load_to_postgres(df_emp_valid, 'empleados')
     else:
-        print(f"⚠️ Archivo no encontrado: {empleados_path}")
+        print(f"Archivo no encontrado: {empleados_path}")
 
     # 2. INCAPACIDADES
     print("\nProcesando Incapacidades...")
@@ -80,7 +80,7 @@ def main():
         df_inc_secured.columns = df_inc_secured.columns.str.lower()
         load_to_postgres(df_inc_secured, 'incapacidades')
     else:
-        print(f"⚠️ Archivo no encontrado: {incapacidades_path}")
+        print(f"Archivo no encontrado: {incapacidades_path}")
 
     # 3. ENCUESTAS
     print("\nProcesando Encuestas...")
@@ -96,9 +96,9 @@ def main():
         df_enc_valid.columns = df_enc_valid.columns.str.lower()
         load_to_postgres(df_enc_valid, 'encuestas_sintomas')
     else:
-        print(f"⚠️ Archivo no encontrado: {encuestas_path}")
+        print(f"Archivo no encontrado: {encuestas_path}")
 
-    print("\n🎉 Pipeline finalizado exitosamente!")
+    print("\nPipeline finalizado exitosamente!")
 
 if __name__ == "__main__":
     main()

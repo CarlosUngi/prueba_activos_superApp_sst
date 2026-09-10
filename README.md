@@ -1,81 +1,75 @@
-# SuperApp SST & Salud Ocupacional
+# SuperApp SST - Sistema de Salud en el Trabajo
 
-Prototipo funcional para el área de Salud y Seguridad en el Trabajo, desarrollado como parte de la evaluación técnica para el rol de Lead Architect / Fullstack.
+Este proyecto implementa la prueba técnica para el cargo de Backend Developer.
+El sistema cuenta con Arquitectura Hexagonal/Limpia en el backend, un pipeline de datos ETL con Pandas, y un frontend interactivo en React.
 
-## 🏗️ Arquitectura del Proyecto
+## Requisitos Previos
 
-El proyecto está diseñado bajo una **Arquitectura de Capas orientada a microservicios**, priorizando la separación de responsabilidades y la seguridad de los datos confidenciales (RBAC).
+- Python 3.10 o superior
+- Node.js 18 o superior
+- Docker y Docker Compose (para la base de datos PostgreSQL)
 
-*   **`db/`**: Infraestructura (PostgreSQL 16 en Docker).
-*   **`data_pipeline/`**: Microservicio ETL basado en el **Paradigma Funcional** con Pandas. Extrae, limpia, estandariza y encripta (FerMédico Ocupacional / Admin SST:net) los CSV originales antes de insertarlos en BD.
-*   **`transactional_api/`**: Backend Transaccional (FastAPI). Expone los endpoints protegidos con JWT. Implementa el Pilar A (Roles) y el Pilar B (Motor de Alertas en segundo plano).
-*   **`frontend/`**: Single Page Application (React 18 + Vite + TailwindCSS v4). Consume la API y muestra dashboards y datos según el nivel de autorización (Pilar C).
+## Paso 1: Levantar la Base de Datos
 
-## 🚀 Instrucciones de Ejecución Local
+En la raiz del proyecto, inicia la base de datos PostgreSQL mediante Docker:
 
-### 1. Base de Datos
 ```bash
-cd db
-sudo docker compose up -d
+docker-compose up -d
 ```
-*(Nota: Si usaste volúmenes antiguos en el puerto 5432, asegúrate de limpiarlos con `docker compose down -v` primero).*
 
-### 2. Ejecutar el Data Pipeline (ETL)
-Limpiará los CSV, encriptará los diagnósticos y poblará la base de datos.
+Asegurate de que el contenedor este corriendo en el puerto 5432.
+
+## Paso 2: Ejecutar el ETL y Poblar Datos
+
+El pipeline de datos lee los CSVs, limpia los datos, y los inserta en la base de datos.
+
+1. Ve a la carpeta del pipeline:
 ```bash
 cd data_pipeline
-source ../.venv/bin/activate
+```
+2. Activa el entorno y corre el pipeline:
+```bash
+source .venv/bin/activate
 python run_pipeline.py
 ```
 
-### 3. Levantar la API Transaccional (Backend)
+## Paso 3: Levantar el Backend (FastAPI)
+
+El backend expone la API REST, implementa RBAC y el motor de alertas.
+
+1. Ve a la carpeta del API:
 ```bash
 cd transactional_api
-source ../.venv/bin/activate
+```
+2. Activa el entorno e inicia el servidor:
+```bash
+source .venv/bin/activate
 uvicorn app.main:app --reload
 ```
-La API estará disponible en `http://localhost:8000`. Swagger en `/docs`.
+La documentacion de la API estara disponible en: http://localhost:8000/docs
 
-### 4. Levantar el Frontend (Dashboard)
-En una nueva terminal:
+## Paso 4: Levantar el Frontend (React)
+
+1. Ve a la carpeta del frontend:
 ```bash
 cd frontend
+```
+2. Inicia la aplicacion de desarrollo:
+```bash
 npm run dev
 ```
-La aplicación web estará disponible en `http://localhost:5173`.
+La aplicacion estara disponible en: http://localhost:5173
 
----
+## Usuarios de Prueba (Demo)
 
-## 🔐 Credenciales de Prueba (Demo)
+Puedes iniciar sesion en el frontend con los siguientes perfiles:
 
-El script `seed.py` del backend ya creó estos usuarios con diferentes roles para probar el Pilar A (RBAC):
+- Perfil HRBP (Lider)
+  Email: lider@superapp.com
+  Password: 123456
 
-1.  **Líder HRBP (Solo ve métricas agregadas y datos censurados)**
-    *   Usuario: `lider@superapp.com`
-    *   Clave: `123456`
-2.  **Médico SST (Acceso total y desencriptación en tiempo real)**
-    *   Usuario: `medico@superapp.com`
-    *   Clave: `123456`
+- Perfil Medico SST (Administrador Medico)
+  Email: medico@superapp.com
+  Password: 123456
 
----
-
-## 🚧 Avance Actual y Tareas Pendientes (TODO)
-
-✅ **Completado:**
-*   Infraestructura Dockerizada.
-*   Pipeline ETL Funcional (limpieza de inconsistencias).
-*   Backend de FastAPI (Seguridad JWT, Endpoints, Background Tasks).
-*   Frontend Dashboard (React, Tailwind, Recharts, Renderizado Condicional por Rol).
-
-⏳ **Pendiente para la próxima sesión:**
-*   **Frontend - Pilar B:** Agregar un botón/formulario en el Dashboard de React (solo visible para Médicos) para registrar una nueva incapacidad. Esto permitirá simular y detonar en vivo la alerta de "Riesgo Alto" durante la demostración al equipo evaluador.
-
----
-
-## 🤖 Contexto de Antigravity (Para uso interno)
-
-*Si necesitas continuar este desarrollo mañana usando el CLI de Antigravity, usa el siguiente comando para retomar la sesión con todo el contexto intacto:*
-
-```bash
-agy --conversation 9bf8cfb3-15f7-468b-b9e3-d75d14587b41
-```
+Para probar el motor de alertas, ingresa como Medico y agrega incapacidades al EMP-014.

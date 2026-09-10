@@ -27,7 +27,7 @@ def seed_db():
         )
         db.add_all([lider, medico])
         db.commit()
-        print("✅ Usuarios 'lider@superapp.com' y 'medico@superapp.com' creados (Clave: 123456)")
+        print("Usuarios 'lider@superapp.com' y 'medico@superapp.com' creados (Clave: 123456)")
     else:
         print("Los usuarios ya existen.")
     db.close()
